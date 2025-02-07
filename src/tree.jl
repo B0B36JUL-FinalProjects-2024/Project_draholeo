@@ -38,3 +38,10 @@ function nn_search(tree::Tree, query_coords::Vector{T}) where T <: Real
     ind, _ = nn(tree.knnTree, query_coords)
     return tree.nodes[ind]
 end
+
+function get_root(tree::Tree)
+    if length(tree.nodes) >= 1
+        return tree.nodes[1]
+    end
+    return nothing
+end

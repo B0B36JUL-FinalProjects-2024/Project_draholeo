@@ -1,5 +1,6 @@
 module PathFinder
 
+export PlanningSpace, RRTPlanner
 export plan
 
 abstract type AbstractPlanner end
@@ -13,5 +14,6 @@ end
 
 include("rrt.jl")
 include("tree.jl")
+include("utils.jl")
 
 end
