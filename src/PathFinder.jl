@@ -1,6 +1,6 @@
 module PathFinder
 
-export PlanningSpace, RRTPlanner
+export PlanningSpace, RRTPlanner, PRMPlanner
 export plan
 
 abstract type AbstractPlanner end
@@ -13,6 +13,7 @@ Base.@kwdef struct PlanningSpace
 end
 
 include("rrt.jl")
+include("prm.jl")
 include("graph.jl")
 include("tree.jl")
 include("utils.jl")

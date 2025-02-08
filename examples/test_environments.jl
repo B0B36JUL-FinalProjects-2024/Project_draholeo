@@ -5,7 +5,7 @@
 using SeparatingAxisTheorem2D
 import Plots: plot, plot!
 using Plots
-using PathFinder: Tree
+using PathFinder: Tree, Graph, get_nodes, AbstractGraph, TreeNode, Node
 
 OBS_COLOR = RGB(222 / 255, 196 / 255, 132 / 255)
 GRAPH_COLOR = RGB(87 / 255, 126 / 255, 137 / 255)
@@ -62,14 +62,23 @@ function plot(env::Env)
     end
 end
 
-function plot!(tree::Tree; width=9)
-    xs = [node.coords[1] for node in tree.nodes]
-    ys = [node.coords[2] for node in tree.nodes]
-    scatter!(xs, ys, color=GRAPH_COLOR, markerstrokewidth=0, markersize=1.5 * width)
-    for node in tree.nodes
-        for child in node.children
-            plot!([node.coords[1], child.coords[1]], [node.coords[2], child.coords[2]], lw=width, color=GRAPH_COLOR)
-        end
+function plot!(node::TreeNode; width=9)
+    scatter!([node.coords[1]], [node.coords[2]], color=GRAPH_COLOR, markerstrokewidth=0, markersize=1.5 * width)
+    for child in node.children
+        plot!([node.coords[1], child.coords[1]], [node.coords[2], child.coords[2]], lw=width, color=GRAPH_COLOR)
+    end
+end
+
+function plot!(node::Node; width=9)
+    scatter!([node.coords[1]], [node.coords[2]], color=GRAPH_COLOR, markerstrokewidth=0, markersize=1.5 * width)
+    for n in node.neighbors
+        plot!([node.coords[1], n.coords[1]], [node.coords[2], n.coords[2]], lw=width, color=GRAPH_COLOR)
+    end
+end
+
+function plot!(graph::AbstractGraph; width=9)
+    for node in get_nodes(graph)
+        plot!(node; width)
     end
 end
 
@@ -80,11 +89,11 @@ function plot!(path::Matrix{Float64}; width=9)
     end
 end
 
-function plot(env::Env, path::Matrix{Float64}, tree::Tree, width=9)
+function plot(env::Env, path::Union{Matrix{Float64},Nothing}, graph::AbstractGraph; width=9)
     plot(env)
-    plot!(tree; width)
+    plot!(graph; width)
     if !isnothing(path)
-        plot!(path; width = 1.1 * width)
+        plot!(path; width=1.1 * width)
     end
 end
 
