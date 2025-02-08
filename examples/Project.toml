@@ -1,4 +1,5 @@
 [deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 PathFinder = "06d03b12-acfb-4cd6-8e5d-a8dc42480970"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 SeparatingAxisTheorem2D = "33f35c42-577e-5c66-8569-bbf1771cbf32"

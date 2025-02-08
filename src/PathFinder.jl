@@ -12,10 +12,10 @@ Base.@kwdef struct PlanningSpace
     collision_resolution::Float64 = 0.1
 end
 
-include("rrt.jl")
-include("prm.jl")
 include("graph.jl")
 include("tree.jl")
 include("utils.jl")
+include("rrt.jl")
+include("prm.jl")
 
 end

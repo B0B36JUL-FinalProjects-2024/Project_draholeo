@@ -1,12 +1,16 @@
 using LinearAlgebra
+using DataStructures
 
 Base.@kwdef struct PRMPlanner <: AbstractPlanner
     roadmap_size::Int64 = 1000
     k_neighbors::Int64 = 12
 end
 
-function construct_roadmap(ps::PlanningSpace, planner::PRMPlanner)
+function construct_roadmap(start, goal, ps::PlanningSpace, planner::PRMPlanner)
     graph = Graph(ps.dim)
+    start_node = add_node!(graph, start)
+    goal_node = add_node!(graph, goal)
+
     while length(get_nodes(graph)) < planner.roadmap_size
         random_conf = sample_random_conf(ps)
         if !ps.collision_check(random_conf)
@@ -26,16 +30,63 @@ function construct_roadmap(ps::PlanningSpace, planner::PRMPlanner)
         end
     end
 
-    return graph
+    return start_node, goal_node, graph
 end
 
-function dijkstra()
-    # TODO
+function reconstruct_path(node::Node, parents)
+    path = node.coords
+    while !isnothing(parents[node])
+        path = hcat(path, parents[node].coords)
+        node = parents[node]
+    end
+    reverse!(path, dims=2)
+    return path
+end
+
+function A_star(start::Node, goal::Node, graph::Graph)
+    h(node) = norm(goal.coords - node.coords) # euclidean heuristics definition
+
+    visited = Set{Node}()
+
+    parents = Dict{Node,Union{Node,Nothing}}()
+    parents[start] = nothing
+
+    g_scores = Dict{Node,Float64}()
+    g_scores[start] = 0.0
+
+    queue = PriorityQueue{Node,Float64}()
+    enqueue!(queue, start, 0 + h(start))
+
+    while length(queue) > 0
+        current = dequeue!(queue)
+        push!(visited, current)
+
+        if current == goal
+            return reconstruct_path(current, parents)
+        end
+
+        for neighbor in current.neighbors
+            if neighbor in visited
+                continue
+            end
+
+            g = g_scores[current] + norm(current.coords - neighbor.coords)
+            if neighbor in keys(queue) && g > g_scores[neighbor]
+                continue
+            end
+
+            parents[neighbor] = current
+            g_scores[neighbor] = g
+            queue[neighbor] = g + h(neighbor)
+        end
+    end
+
+    return nothing
 end
 
 function plan(start, goal, ps::PlanningSpace, planner::PRMPlanner)
-    roadmap = construct_roadmap(ps, planner)
-    #path = dijkstra(roadmap)
-    return nothing, roadmap
+    start_node, goal_node, roadmap = construct_roadmap(start, goal, ps, planner)
+    path = A_star(start_node, goal_node, roadmap)
+    return path, roadmap
 end
 

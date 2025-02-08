@@ -33,12 +33,9 @@ savefig("./examples/results/rrt_hard.svg")
 
 planner = PRMPlanner(roadmap_size=200, k_neighbors=8)
 
-path, graph = plan([0.1, 0.5], [0.9, 0.5], ps_easy, planner);
-print(length(get_nodes(graph)))
+path, graph = plan([0.1, 0.5], [0.9, 0.5], ps_easy, planner)
 plot(easy_env, path, graph)
 savefig("./examples/results/prm_easy.svg")
-path, graph = plan([0.1, 0.1], [0.9, 0.9], ps_hard, planner);
+path, graph = plan([0.1, 0.1], [0.9, 0.9], ps_hard, planner)
 plot(hard_env, path, graph)
 savefig("./examples/results/prm_hard.svg")
-
-print("DONE")
