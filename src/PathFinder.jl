@@ -13,6 +13,7 @@ Base.@kwdef struct PlanningSpace
 end
 
 include("rrt.jl")
+include("graph.jl")
 include("tree.jl")
 include("utils.jl")
 

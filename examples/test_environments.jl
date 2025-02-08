@@ -4,6 +4,7 @@
 
 using SeparatingAxisTheorem2D
 import Plots: plot, plot!
+using Plots
 using PathFinder: Tree
 
 OBS_COLOR = RGB(222 / 255, 196 / 255, 132 / 255)

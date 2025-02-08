@@ -4,7 +4,12 @@ using PathFinder
 include("test_environments.jl")
 
 # rrt algorithm in the easy_env
-ps = PlanningSpace(2, [0 1; 0 1], conf -> check_collision(conf, easy_env), 0.1)
+ps = PlanningSpace(
+    dim=2, 
+    limits=[0 1; 0 1], 
+    collision_check = conf -> check_collision(conf, easy_env), 
+    collision_resolution=0.1)
+
 planner = RRTPlanner(step_size = 0.05, max_iters = 10000, tolerance = 0.05)
 path, tree = plan([0.1, 0.5], [0.9, 0.5], ps, planner)
 plot(easy_env, path, tree)
