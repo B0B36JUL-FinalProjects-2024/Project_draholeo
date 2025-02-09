@@ -8,11 +8,21 @@ This Julia package provides implementations of two popular sampling-based path p
 |![RRT](examples/results/rrt_hard.svg) |![PRM](examples/results/prm_hard.svg) |
 |--------------------------------------|--------------------------------------|
 
+## Installation
+
+This package is not registered, but you can install it via the Julia's Pkg package manager:
+
+```julia
+(@v1.10) pkg> add https://github.com/B0B36JUL-FinalProjects-2024/Project_draholeo
+```
+
 ## Usage
 
 1. Define your `PlanningSpace`
 
     ```julia
+    using PathFinder
+
     dimension_of_my_configuration_space = 2
     limits_matrix_of_my_configuration_space = [0 1; 0 1]
     my_collision_checker = conf -> false  # environment with no obstacles
@@ -26,8 +36,8 @@ This Julia package provides implementations of two popular sampling-based path p
     where:
     - `PlanningSpace.dim` is the dimension of the configuration space
     - `PlanningSpace.limits` is (dim, 2) matrix with [min, max] for each dimension
-    - `PlanningSpace.collision_check` is a predicate function, which takes a configuration (dim-dimensional vector) as input and returns True if it collides with obstacles
-    - `PlanningSpace.collision_resolution` is the distance, for which collision is checked during planning
+    - `PlanningSpace.collision_check` is a user-defined function that takes a configuration (a dim-dimensional vector) as input and returns `true` if the configuration is in collision with an obstacle, otherwise `false`
+    - `PlanningSpace.collision_resolution` defines the resolution at which the planner checks for collisions along a path (smaller values result in finer collision checks but may slow down planning)
 
 2. Select your favorite planner
 
@@ -51,7 +61,7 @@ This Julia package provides implementations of two popular sampling-based path p
     - `path` from start_conf to goal_conf ((dim, num_of_waypoints) matrix) or `nothing` if the planning algorithm could not find a collision-free path
     - `graph` which is either a `Graph` for PRM algorithm or `Tree` for RRT algorithm
 
-See examples/example.jl for a full example.
+For a complete working example, see [examples/example.jl](examples/example.jl).
 
 ## Author
 
