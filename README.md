@@ -10,7 +10,7 @@ This Julia package provides implementations of two popular sampling-based path p
 
 ## Installation
 
-This package is not registered, but you can install it via the Julia's Pkg package manager:
+This package is not registered, but you can install it using Julia's Pkg package manager:
 
 ```julia
 (@v1.10) pkg> add https://github.com/B0B36JUL-FinalProjects-2024/Project_draholeo

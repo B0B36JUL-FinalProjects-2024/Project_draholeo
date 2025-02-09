@@ -1,6 +1,19 @@
 using LinearAlgebra
 using DataStructures
 
+"""
+Defines options for the PRM algorithm.
+
+# Fields
+- `roadmap_size::Int64`: Number of vertices in the generated roadmap.
+- `k_neighbors::Int64`: Number of nearest neighbors each vertex connects to in the roadmap. Higher values improve 
+    path quality but increase computation time.
+
+# Example
+```julia
+julia> planner = PRMPlanner(roadmap_size=200, k_neighbors=8)
+```
+"""
 Base.@kwdef struct PRMPlanner <: AbstractPlanner
     roadmap_size::Int64 = 1000
     k_neighbors::Int64 = 12
@@ -84,6 +97,29 @@ function A_star(start::Node, goal::Node, graph::Graph)
     return nothing
 end
 
+"""
+    path, graph = plan(start, goal, ps::PlanningSpace, planner::PRMPlanner)
+
+Plans a collision-free path from `start` to `goal` using the Probabilistic Roadmap (PRM) algorithm in the given  
+`ps` planning space.
+
+# Returns
+- `path::Matrix{Float64}`: A (ps.dim, num_waypoints) matrix representing the planned path,  
+  or `nothing` if no valid path is found.
+- `graph::PathFinder.Graph`: The constructed PRM roadmap.
+
+# Example
+```julia-repl
+julia> ps = PlanningSpace(
+            dim=2, 
+            limits=[0 1; 0 1], 
+            collision_check=(conf::Vector{Float64}) -> false, 
+            collision_resolution=0.01
+        )
+julia> planner = PRMPlanner(roadmap_size=200, k_neighbors=8)
+julia> path, graph = plan([0.1, 0.5], [0.9, 0.5], ps, planner)
+```
+"""
 function plan(start, goal, ps::PlanningSpace, planner::PRMPlanner)
     start_node, goal_node, roadmap = construct_roadmap(start, goal, ps, planner)
     path = A_star(start_node, goal_node, roadmap)
