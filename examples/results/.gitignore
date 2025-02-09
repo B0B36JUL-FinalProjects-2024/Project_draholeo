@@ -1,1 +1,3 @@
 *.svg
+!rrt_hard.svg
+!prm_hard.svg
