@@ -39,7 +39,7 @@ This package is not registered, but you can install it using Julia's Pkg package
     ```
     where:
     - `PlanningSpace.dim` is the dimension of the configuration space
-    - `PlanningSpace.limits` is (dim, 2) matrix with [min, max] for each dimension
+    - `PlanningSpace.limits` is (dim, 2) `Matrix` with [min, max] for each dimension
     - `PlanningSpace.collision_check` is a user-defined function that takes a configuration (a dim-dimensional vector) as input and returns `true` if the configuration is in collision with an obstacle, otherwise `false`
     - `PlanningSpace.collision_resolution` defines the resolution at which the planner checks for collisions along a path (smaller values result in finer collision checks but may slow down planning)
 
@@ -62,8 +62,8 @@ This package is not registered, but you can install it using Julia's Pkg package
     path, graph = plan(start_conf, goal_conf, ps, planner)
     ```
     which returns:
-    - `path` from start_conf to goal_conf ((dim, num_of_waypoints) matrix) or `nothing` if the planning algorithm could not find a collision-free path
-    - `graph` which is either a `Graph` for PRM algorithm or `Tree` for RRT algorithm
+    - `path` from start_conf to goal_conf ((dim, num_of_waypoints) `Matrix{Float64}`) or `nothing` if the planning algorithm could not find a collision-free path
+    - `graph` which is either a `PathFinder.Graph` for PRM algorithm or `PathFinder.Tree` for RRT algorithm
 
 For a complete working example, see [examples/example.jl](examples/example.jl).
 
