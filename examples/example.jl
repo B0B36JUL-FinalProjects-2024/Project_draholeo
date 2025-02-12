@@ -24,12 +24,12 @@ planner = RRTPlanner(step_size=0.05, max_iters=10000, tolerance=0.05)
 path, tree = plan([0.1, 0.5], [0.9, 0.5], ps_easy, planner)
 plot(easy_env, path, tree)
 savefig("./examples/results/rrt_easy.svg")
-create_animation("./examples/results/rrt_easy.gif", easy_env, path, tree) # uncomment to create animation (takes a long time)
+# create_animation("./examples/results/rrt_easy.gif", easy_env, path, tree) # uncomment to create animation (takes a long time)
 
 path, tree = plan([0.1, 0.1], [0.9, 0.9], ps_hard, planner)
 plot(hard_env, path, tree)
 savefig("./examples/results/rrt_hard.svg")
-create_animation("./examples/results/rrt_hard.gif", hard_env, path, tree) # uncomment to create animation (takes a long time)
+# create_animation("./examples/results/rrt_hard.gif", hard_env, path, tree) # uncomment to create animation (takes a long time)
 
 # PRM ALGORITHM ----------------------------------------------------------
 
@@ -38,12 +38,12 @@ planner = PRMPlanner(roadmap_size=200, k_neighbors=8)
 path, graph = plan([0.1, 0.5], [0.9, 0.5], ps_easy, planner)
 plot(easy_env, path, graph)
 savefig("./examples/results/prm_easy.svg")
-create_animation("./examples/results/prm_easy.gif", easy_env, path, graph) # uncomment to create animation (takes a long time)
+# create_animation("./examples/results/prm_easy.gif", easy_env, path, graph) # uncomment to create animation (takes a long time)
 
 path, graph = plan([0.1, 0.1], [0.9, 0.9], ps_hard, planner)
 plot(hard_env, path, graph)
 savefig("./examples/results/prm_hard.svg")
-create_animation("./examples/results/prm_hard.gif", hard_env, path, graph) # uncomment to create animation (takes a long time)
+# create_animation("./examples/results/prm_hard.gif", hard_env, path, graph) # uncomment to create animation (takes a long time)
 
 # EMPTY ENV VISUALIZATION
 
