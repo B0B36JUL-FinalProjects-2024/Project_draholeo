@@ -39,3 +39,11 @@ savefig("./examples/results/prm_easy.svg")
 path, graph = plan([0.1, 0.1], [0.9, 0.9], ps_hard, planner)
 plot(hard_env, path, graph)
 savefig("./examples/results/prm_hard.svg")
+
+# EMPTY ENV VISUALIZATION
+
+plot(easy_env)
+savefig("./examples/results/easy_env.svg")
+
+plot(hard_env)
+savefig("./examples/results/hard_env.svg")

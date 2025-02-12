@@ -83,7 +83,11 @@ function plot!(graph::AbstractGraph; width=9)
 end
 
 function plot!(path::Matrix{Float64}; width=9)
-    scatter!(path[1, :], path[2, :], color=PATH_COLOR, markerstrokewidth=0, markersize=1.5 * width)
+    # start (triangle) and goal (star) node
+    scatter!([path[1, 1]], [path[2, 1]], markershape=:circle, color=PATH_COLOR, markerstrokewidth=0, markersize=2 * width)
+    scatter!([path[1, end]], [path[2, end]], markershape=:star5, color=PATH_COLOR, markerstrokewidth=0, markersize=3 * width)
+    # other nodes
+    scatter!(path[1, 2:end-1], path[2, 2:end-1], color=PATH_COLOR, markerstrokewidth=0, markersize=1.5 * width)
     for i in 1:size(path, 2)-1
         plot!([path[1, i], path[1, i+1]], [path[2, i], path[2, i+1]], lw=width, color=PATH_COLOR)
     end
@@ -96,11 +100,3 @@ function plot(env::Env, path::Union{Matrix{Float64},Nothing}, graph::AbstractGra
         plot!(path; width=1.1 * width)
     end
 end
-
-# ENV VISUALIZATION
-
-plot(easy_env)
-savefig("./examples/results/easy_env.svg")
-
-plot(hard_env)
-savefig("./examples/results/hard_env.svg")
