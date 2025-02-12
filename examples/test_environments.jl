@@ -54,11 +54,18 @@ function plot!(obs::Polygon)
     plot!(xs, ys, seriestype=:shape, fillcolor=OBS_COLOR, linewidth=0)
 end
 
-function plot(env::Env)
+function plot(env::Env; start=nothing, goal=nothing, width=9)
     plot([], [], axis=false, grid=false, legend=false, xlims=(0, env.x_max), ylims=(0, env.y_max),
         size=(2000, 2000), aspect_ratio=1) # empty plot
     for obs in env.obstacles
         plot!(obs)
+    end
+
+    if !isnothing(start)
+        scatter!([start[1]], [start[2]], markershape=:circle, color=PATH_COLOR, markerstrokewidth=0, markersize=2 * width)
+    end
+    if !isnothing(goal)
+        scatter!([goal[1]], [goal[2]], markershape=:star5, color=PATH_COLOR, markerstrokewidth=0, markersize=3 * width)
     end
 end
 
@@ -83,7 +90,7 @@ function plot!(graph::AbstractGraph; width=9)
 end
 
 function plot!(path::Matrix{Float64}; width=9)
-    # start (triangle) and goal (star) node
+    # start (circle) and goal (star) node
     scatter!([path[1, 1]], [path[2, 1]], markershape=:circle, color=PATH_COLOR, markerstrokewidth=0, markersize=2 * width)
     scatter!([path[1, end]], [path[2, end]], markershape=:star5, color=PATH_COLOR, markerstrokewidth=0, markersize=3 * width)
     # other nodes
@@ -99,4 +106,42 @@ function plot(env::Env, path::Union{Matrix{Float64},Nothing}, graph::AbstractGra
     if !isnothing(path)
         plot!(path; width=1.1 * width)
     end
+end
+
+# ANIMATION
+
+function animate_graph_creation(anim, tree::Tree; width=9)
+    for node in get_nodes(tree)
+        scatter!([node.coords[1]], [node.coords[2]], color=GRAPH_COLOR, markerstrokewidth=0, markersize=1.5 * width)
+        if !isnothing(node.parent)
+            parent = node.parent
+            plot!([node.coords[1], parent.coords[1]], [node.coords[2], parent.coords[2]], lw=width, color=GRAPH_COLOR) # edge to parent
+        end
+        frame(anim)
+    end
+end
+
+function animate_graph_creation(anim, graph::Graph; width=9)
+    for node in get_nodes(graph)
+        scatter!([node.coords[1]], [node.coords[2]], color=GRAPH_COLOR, markerstrokewidth=0, markersize=1.5 * width)
+        frame(anim)
+    end
+    for node in get_nodes(graph)
+        for n in node.neighbors
+            plot!([node.coords[1], n.coords[1]], [node.coords[2], n.coords[2]], lw=width, color=GRAPH_COLOR)
+        end
+        frame(anim)
+    end
+end
+
+function create_animation(file_name, env::Env, path::Union{Matrix{Float64},Nothing}, graph::AbstractGraph; width=9)
+    anim = Animation()
+    plot(env; start=[path[1, 1], path[2, 1]], goal=[path[1, end], path[2, end]])
+    frame(anim)
+    animate_graph_creation(anim, graph; width)
+    plot!(path; width)
+    for _ in 1:30
+        frame(anim)
+    end
+    gif(anim, file_name; fps=15)
 end

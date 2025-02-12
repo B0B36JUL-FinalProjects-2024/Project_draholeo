@@ -2,10 +2,14 @@
 
 This Julia package provides implementations of two popular sampling-based path planning algorithms:
 
-- Rapidly exploring random tree (RRT)
-- Probabilistic roadmap (the simplified, k-nearest variant: k-Nearest sPRM)
+- Rapidly exploring random tree (**RRT**)
 
-|![RRT](examples/results/rrt_hard.svg) |![PRM](examples/results/prm_hard.svg) |
+|![RRT](examples/results/rrt_hard.gif) |![RRT](examples/results/rrt_hard.svg) |
+|--------------------------------------|--------------------------------------|
+
+- Probabilistic roadmap (the simplified, k-nearest variant: **k-Nearest sPRM**)
+
+|![PRM](examples/results/prm_hard.gif) |![PRM](examples/results/prm_hard.svg) |
 |--------------------------------------|--------------------------------------|
 
 ## Installation

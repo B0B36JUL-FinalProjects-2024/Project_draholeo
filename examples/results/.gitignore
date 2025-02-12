@@ -1,3 +1,6 @@
 *.svg
+*.gif
 !rrt_hard.svg
 !prm_hard.svg
+!rrt_hard.gif
+!prm_hard.gif
